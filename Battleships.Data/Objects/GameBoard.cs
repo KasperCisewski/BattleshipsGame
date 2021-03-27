@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Battleships.Data.Objects
+﻿namespace Battleships.Data.Objects
 {
     public class GameBoard
     {
-        //public 
+        internal Field[,] BoardForFirstPlayer { get; set; }
+        internal Field[,] BoardForSecondPlayer { get; set; }
     }
 }

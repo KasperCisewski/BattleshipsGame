@@ -4,5 +4,6 @@
     {
         //     public uint ; 
         public string WinnerName { get; set; }
+        public bool ShouldFinish { get; set; }
     }
 }

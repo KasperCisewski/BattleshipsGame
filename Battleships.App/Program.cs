@@ -1,5 +1,7 @@
 ﻿using Battleships.Data.Objects;
 using Battleships.Logic;
+using Battleships.Logic.Services;
+using Battleships.Logic.Services.Implementation;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
@@ -22,9 +24,9 @@ namespace Battleships.App
         {
             var services = new ServiceCollection();
             services.AddScoped<BattleshipGame>();
-            // var gameBoard = new GameBoard();
             services.AddSingleton<GameBoard>();
             services.AddScoped<GameStrategyCreator>();
+            services.AddScoped<IBoardService, BoardService>();
             _serviceProvider = services.BuildServiceProvider(true);
         }
 

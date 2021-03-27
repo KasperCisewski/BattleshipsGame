@@ -1,6 +1,15 @@
-﻿namespace Battleships.Logic.Builders
+﻿using Battleships.Data.Objects;
+using System;
+
+namespace Battleships.Logic.Builders
 {
-    class BoardBuilder
+    public class BoardBuilder
     {
+        public BoardBuilder()
+        {
+
+        }
+
+
     }
 }

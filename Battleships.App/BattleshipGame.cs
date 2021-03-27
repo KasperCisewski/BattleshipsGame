@@ -3,6 +3,7 @@ using Battleships.Data.Data;
 using Battleships.Data.Enums;
 using Battleships.Data.Extensions;
 using Battleships.Logic;
+using Battleships.Logic.Services;
 using System;
 using System.Threading.Tasks;
 
@@ -11,10 +12,12 @@ namespace Battleships.App
     internal class BattleshipGame
     {
         private readonly GameStrategyCreator _gameStrategyCreator;
+        private readonly IBoardService _boardService;
 
-        public BattleshipGame(GameStrategyCreator gameStrategyCreator)
+        public BattleshipGame(GameStrategyCreator gameStrategyCreator, IBoardService boardService)
         {
             _gameStrategyCreator = gameStrategyCreator;
+            _boardService = boardService;
         }
 
         public async Task Run()
@@ -37,7 +40,7 @@ namespace Battleships.App
                 return;
             }
 
-            var gameStrategy = _gameStrategyCreator.GetGameStrategy(userEnumChoice);
+            var gameStrategy = _gameStrategyCreator.GetGameStrategy(userEnumChoice, AppData.BoardData.BoardSize, AppData.ShipData.ShipsWithQuantity);
 
             if (userEnumChoice == UserChoice.PlayWithComputer)
             {
@@ -46,12 +49,11 @@ namespace Battleships.App
                 do
                 {
                     ClearScreen();
-
+                    ShowBoards();
                     resultGame = await gameStrategy.Play();
 
-                } while (resultGame != null);
-                var cos = AppData.BoardData.BoardSize;
-                var cos2 = AppData.ShipData.ShipsWithQuantity;
+                } while (resultGame != null && resultGame.ShouldFinish);
+
                 Console.WriteLine($"Winner is {resultGame.WinnerName}");
             }
 
@@ -63,6 +65,28 @@ namespace Battleships.App
 
             foreach (var menuChoice in Enum.GetValues<UserChoice>())
                 Console.WriteLine($"{(int)menuChoice} - {menuChoice.GetDescription()}");
+        }
+
+        private void ShowBoards()
+        {
+            var boards = _boardService.GetBoardFields(0);
+
+            for (int i = 0; i < boards.Item1.Length; i++)
+            {
+                for (int j = 0; j < boards.Item1.Length; j++)
+                {
+
+                }
+            }
+
+            for (int i = 0; i < boards.Item2.Length; i++)
+            {
+                for (int j = 0; j < boards.Item2.Length; j++)
+                {
+
+                }
+            }
+
         }
 
         private void ClearScreen()
