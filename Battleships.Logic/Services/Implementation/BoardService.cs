@@ -1,4 +1,5 @@
-﻿using Battleships.Data.Objects;
+﻿using Battleships.Data.Enums;
+using Battleships.Data.Objects;
 using System;
 
 namespace Battleships.Logic.Services.Implementation
@@ -12,13 +13,12 @@ namespace Battleships.Logic.Services.Implementation
             _gameBoard = gameBoard;
         }
 
-        //change A5 - to 0 6
         public bool CanShotToField(int player, Tuple<int, int> cordinates)
         {
             if (player == 0)
-                return CanShotToField(_gameBoard.BoardForFirstPlayer, cordinates);
-            else
                 return CanShotToField(_gameBoard.BoardForSecondPlayer, cordinates);
+            else
+                return CanShotToField(_gameBoard.BoardForFirstPlayer, cordinates);
         }
 
         private bool CanShotToField(Field[,] oponentFields, Tuple<int, int> cordinates)
@@ -43,25 +43,25 @@ namespace Battleships.Logic.Services.Implementation
 
         public Tuple<int, int> GetCordinatesFromShotPropositionFormat(string columnLetter, int rowNumber)
         {
-            var
+            var letterIndex = columnLetter[0] - 64;
 
-            return new Tuple<int, int>(rowNumber - 1, );
+            return new Tuple<int, int>(rowNumber - 1, letterIndex - 1);
         }
 
         public bool ShotToField(int player, Tuple<int, int> cordinates)
         {
             if (player == 0)
-                return CanShoShotToFieldtToField(_gameBoard.BoardForFirstPlayer, cordinates);
+                return ShotToField(_gameBoard.BoardForSecondPlayer, cordinates);
             else
-                return CanShoShotToFieldtToField(_gameBoard.BoardForSecondPlayer, cordinates);
+                return ShotToField(_gameBoard.BoardForFirstPlayer, cordinates);
         }
 
-        private bool CanShoShotToFieldtToField(Field[,] oponentFields, Tuple<int, int> cordinates)
+        private bool ShotToField(Field[,] oponentFields, Tuple<int, int> cordinates)
         {
             var specificField = oponentFields[cordinates.Item1, cordinates.Item2];
 
             specificField.FieldValue = "H";
-
+            specificField.FieldType = FieldType.SinkShipPart;
             return true;
         }
     }

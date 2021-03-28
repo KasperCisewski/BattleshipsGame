@@ -2,9 +2,8 @@
 {
     public class Field
     {
-        public int Row { get; set; }
-        public int Column { get; set; }
         public string FieldValue { get; set; } = "X";
+        public FieldType FieldType { get; set; }
         public bool IsOccupied { get; set; }
     }
 }
