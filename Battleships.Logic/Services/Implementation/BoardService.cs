@@ -1,6 +1,7 @@
 ﻿using Battleships.Data.Enums;
 using Battleships.Data.Objects;
 using System;
+using System.Linq;
 
 namespace Battleships.Logic.Services.Implementation
 {
@@ -51,17 +52,36 @@ namespace Battleships.Logic.Services.Implementation
         public bool ShotToField(int player, Tuple<int, int> cordinates)
         {
             if (player == 0)
-                return ShotToField(_gameBoard.BoardForSecondPlayer, cordinates);
+                return MakeFieldAsShotField(_gameBoard.BoardForSecondPlayer, cordinates);
             else
-                return ShotToField(_gameBoard.BoardForFirstPlayer, cordinates);
+                return MakeFieldAsShotField(_gameBoard.BoardForFirstPlayer, cordinates);
         }
 
-        private bool ShotToField(Field[,] oponentFields, Tuple<int, int> cordinates)
+        private bool MakeFieldAsShotField(Field[,] oponentFields, Tuple<int, int> cordinates)
         {
             var specificField = oponentFields[cordinates.Item1, cordinates.Item2];
 
             specificField.FieldValue = "H";
             specificField.FieldType = FieldType.SinkShipPart;
+            return true;
+        }
+
+        public bool CheckIfPlayerWon(int player)
+        {
+            if (player == 0)
+                return CheckIfPlayerWon(_gameBoard.BoardForSecondPlayer);
+            else
+                return CheckIfPlayerWon(_gameBoard.BoardForFirstPlayer);
+        }
+
+        private bool CheckIfPlayerWon(Field[,] oponentsFields)
+        {
+            foreach (var item in oponentsFields)
+            {
+                if (item.FieldType == FieldType.LiveShipPart)
+                    return false;
+            }
+
             return true;
         }
     }

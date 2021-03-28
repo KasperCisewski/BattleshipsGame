@@ -1,20 +1,23 @@
 ﻿using Battleships.Data.Data;
 using Battleships.Data.Objects;
+using Battleships.Logic.Services;
 
 namespace Battleships.Logic.Strategies.Implementation
 {
     internal class PlayWithComputerStrategy : IGameStrategy
     {
         private readonly GameBoard _gameBoard;
+        private readonly IBoardService _boardService;
 
-        public PlayWithComputerStrategy(GameBoard gameBoard)
+        public PlayWithComputerStrategy(GameBoard gameBoard, IBoardService boardService)
         {
             _gameBoard = gameBoard;
+            _boardService = boardService;
         }
 
         public GameResult Play()
         {
-            var playerWon = CheckIfPlayerWon(0);
+            var playerWon = _boardService.CheckIfPlayerWon(0);
             if (playerWon)
                 return new GameResult()
                 {
@@ -26,7 +29,7 @@ namespace Battleships.Logic.Strategies.Implementation
             //computer play
 
 
-            var computerWon = CheckIfPlayerWon(1);
+            var computerWon = _boardService.CheckIfPlayerWon(1);
             if (computerWon)
                 return new GameResult()
                 {
@@ -39,11 +42,6 @@ namespace Battleships.Logic.Strategies.Implementation
                 ShouldFinish = false,
                 WinnerName = string.Empty
             };
-        }
-
-        private bool CheckIfPlayerWon(int player)
-        {
-
         }
 
         public void PrepareGame()
