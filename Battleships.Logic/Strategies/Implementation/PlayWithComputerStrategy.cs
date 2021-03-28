@@ -1,6 +1,7 @@
 ﻿using Battleships.Data.Data;
 using Battleships.Data.Objects;
 using Battleships.Logic.Services;
+using System;
 
 namespace Battleships.Logic.Strategies.Implementation
 {
@@ -25,9 +26,22 @@ namespace Battleships.Logic.Strategies.Implementation
                     WinnerName = "Player one"
                 };
 
+            var random = new Random();
+            Tuple<int, int> cordinatesToShot;
 
-            //computer play
+            do
+            {
+                var randomRow = random.Next(_gameBoard.BoardSize);
+                var randomColumn = random.Next(_gameBoard.BoardSize);
+                cordinatesToShot = new Tuple<int, int>(randomRow, randomColumn);
+                if (!_boardService.CanShotToField(1, cordinatesToShot))
+                {
+                    cordinatesToShot = null;
+                }
 
+            } while (cordinatesToShot == null);
+
+            _boardService.ShotToField(1, cordinatesToShot);
 
             var computerWon = _boardService.CheckIfPlayerWon(1);
             if (computerWon)

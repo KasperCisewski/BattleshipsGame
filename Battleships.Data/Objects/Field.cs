@@ -1,4 +1,6 @@
-﻿namespace Battleships.Data.Objects
+﻿using Battleships.Data.Enums;
+
+namespace Battleships.Data.Objects
 {
     public class Field
     {

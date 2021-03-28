@@ -2,6 +2,7 @@
 {
     public enum FieldType
     {
+        Free,
         LiveShipPart,
         SinkShipPart,
         Miss

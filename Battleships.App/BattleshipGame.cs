@@ -79,18 +79,22 @@ namespace Battleships.App
                         if (!_boardService.CanShotToField(0, cordinatesToShot))
                         {
                             Console.WriteLine("You cant shot to that field");
-                            continue;
+                            cordinatesToShot = null;
                         }
 
                     } while (cordinatesToShot == null);
 
                     _boardService.ShotToField(0, cordinatesToShot);
-                      var result = gameStrategy.Play();
-                    // resultGame = await gameStrategy.PrepareGame();
+                    var result = gameStrategy.Play();
+
+                    if (result.ShouldFinish)
+                    {
+                        Console.WriteLine($"Winner is {resultGame.WinnerName}");
+                        return;
+                    }
 
                 } while (true);
 
-                //Console.WriteLine($"Winner is {resultGame.WinnerName}");
             }
 
         }

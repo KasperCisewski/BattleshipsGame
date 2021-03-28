@@ -7,30 +7,31 @@ namespace Battleships.Data.Objects
 {
     public class GameBoard
     {
-        private readonly int _boardSize;
+        public int BoardSize { get; set; }
+
         private readonly Dictionary<ShipType, int> _shipsWithQuantity;
         internal Field[,] BoardForFirstPlayer { get; set; }
         internal Field[,] BoardForSecondPlayer { get; set; }
 
         public GameBoard(int boardSize, Dictionary<ShipType, int> shipsWithQuantity)
         {
-            _boardSize = boardSize;
+            BoardSize = boardSize;
             _shipsWithQuantity = shipsWithQuantity;
             PrepareGameBoard();
         }
 
         private void PrepareGameBoard()
         {
-            BoardForFirstPlayer = new Field[_boardSize, _boardSize];
+            BoardForFirstPlayer = new Field[BoardSize, BoardSize];
             FillGameBoardWithEmptyFields(BoardForFirstPlayer);
-            BoardForSecondPlayer = new Field[_boardSize, _boardSize];
+            BoardForSecondPlayer = new Field[BoardSize, BoardSize];
             FillGameBoardWithEmptyFields(BoardForSecondPlayer);
         }
 
         private void FillGameBoardWithEmptyFields(Field[,] board)
         {
-            for (int i = 0; i < _boardSize; i++)
-                for (int j = 0; j < _boardSize; j++)
+            for (int i = 0; i < BoardSize; i++)
+                for (int j = 0; j < BoardSize; j++)
                     board[i, j] = new Field();
         }
 
@@ -48,8 +49,8 @@ namespace Battleships.Data.Objects
                 for (int i = 0; i < ship.Value;)
                 {
                     var shipLength = (int)ship.Key;
-                    var randomColumnAtBoard = random.Next(_boardSize);
-                    var randomRowAtBoard = random.Next(_boardSize);
+                    var randomColumnAtBoard = random.Next(BoardSize);
+                    var randomRowAtBoard = random.Next(BoardSize);
                     var randomDirection = (Direction)random.Next(4);
 
                     switch (randomDirection)
@@ -59,7 +60,7 @@ namespace Battleships.Data.Objects
                                 continue;
                             break;
                         case Direction.Down:
-                            if (randomRowAtBoard + shipLength > _boardSize)
+                            if (randomRowAtBoard + shipLength > BoardSize)
                                 continue;
                             break;
                         case Direction.Left:
@@ -67,7 +68,7 @@ namespace Battleships.Data.Objects
                                 continue;
                             break;
                         case Direction.Right:
-                            if (randomColumnAtBoard + shipLength > _boardSize)
+                            if (randomColumnAtBoard + shipLength > BoardSize)
                                 continue;
                             break;
                         default:
@@ -82,15 +83,19 @@ namespace Battleships.Data.Objects
                         {
                             case Direction.Up:
                                 board[randomRowAtBoard - j, randomColumnAtBoard].FieldValue = ship.Key.GetDescription();
+                                board[randomRowAtBoard - j, randomColumnAtBoard].FieldType = FieldType.LiveShipPart; 
                                 break;
                             case Direction.Down:
                                 board[randomRowAtBoard + j, randomColumnAtBoard].FieldValue = ship.Key.GetDescription();
+                                board[randomRowAtBoard + j, randomColumnAtBoard].FieldType = FieldType.LiveShipPart;
                                 break;
                             case Direction.Left:
                                 board[randomRowAtBoard, randomColumnAtBoard - j].FieldValue = ship.Key.GetDescription();
+                                board[randomRowAtBoard, randomColumnAtBoard - j].FieldType = FieldType.LiveShipPart;
                                 break;
                             case Direction.Right:
                                 board[randomRowAtBoard, randomColumnAtBoard + j].FieldValue = ship.Key.GetDescription();
+                                board[randomRowAtBoard, randomColumnAtBoard + j].FieldType = FieldType.LiveShipPart;
                                 break;
                             default:
                                 continue;
