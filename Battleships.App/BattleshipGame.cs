@@ -42,28 +42,51 @@ namespace Battleships.App
             }
 
             var gameStrategy = _gameStrategyCreator.GetGameStrategy(userEnumChoice);
-            await gameStrategy.Play();
+            gameStrategy.PrepareGame();
             if (userEnumChoice == UserChoice.PlayWithComputer)
             {
                 GameResult resultGame = null;
-
                 do
                 {
                     ClearScreen();
                     ShowBoards(0);
-                    var shotProposition = string.Empty;
-                    var isRegexMatch = false;
+                    Tuple<int, int> cordinatesToShot = null;
                     var lastAllowedLetter = (char)('A' + AppData.BoardData.BoardSize - 1);
+                    var rightFormat = $"[A-{lastAllowedLetter}]-[1-{AppData.BoardData.BoardSize}]";
                     do
                     {
-                        Console.WriteLine($"Where do you want to shoot? Should be in format [A-{lastAllowedLetter}]-[1-{AppData.BoardData.BoardSize}]");
-                        shotProposition = Console.ReadLine();
+                        Console.WriteLine($"Where do you want to shoot? Should be in format {rightFormat}");
+                        var shotProposition = Console.ReadLine();
 
-                        isRegexMatch = Regex.IsMatch(shotProposition, $"[A-{lastAllowedLetter}]-\\d");
+                        var isRegexMatch = Regex.IsMatch(shotProposition, $"[A-{lastAllowedLetter}]-\\d");
+                        if (isRegexMatch == false)
+                        {
+                            Console.WriteLine($"Incorrect format, should be {rightFormat}");
+                            continue;
+                        }
 
-                    } while (isRegexMatch == false);
+                        var splittedShotProposition = shotProposition.Split('-');
+                        var fieldNumber = int.Parse(splittedShotProposition[1]);
 
-                    resultGame = await gameStrategy.Play();
+                        if (fieldNumber < 1 || fieldNumber > AppData.BoardData.BoardSize)
+                        {
+                            Console.WriteLine($"Incorrect format, should be {rightFormat}");
+                            continue;
+                        }
+
+                        cordinatesToShot = _boardService.GetCordinatesFromShotPropositionFormat(splittedShotProposition[0], fieldNumber);
+
+                        if (!_boardService.CanShotToField(0, cordinatesToShot))
+                        {
+                            Console.WriteLine("You cant shot to that field");
+                            continue;
+                        }
+
+                    } while (cordinatesToShot == null);
+
+                    _boardService.ShotToField(0, cordinatesToShot);
+                    var result = gameStrategy.Play();
+                    // resultGame = await gameStrategy.PrepareGame();
 
                 } while (resultGame != null && resultGame.ShouldFinish);
 
@@ -83,46 +106,93 @@ namespace Battleships.App
         private void ShowBoards(int playerId)
         {
             var boards = _boardService.GetBoardFields(playerId);
+
             Console.WriteLine("Your board");
 
-            Console.Write("  ");
-            for (int i = 0; i < AppData.BoardData.BoardSize; i++)
-                Console.Write($"{(char)('A' + i)} ");
-
-            Console.WriteLine();
+            WriteBoardColumns();
 
             for (int i = 0; i < AppData.BoardData.BoardSize; i++)
             {
-
                 for (int j = 0; j < AppData.BoardData.BoardSize; j++)
                 {
-                    if (j == 0)
-                        Console.Write($"{i} ");
+                    WriteRowNumber(i, j);
 
-                    Console.Write($"{boards.Item1[i, j].FieldValue} ");
+                    WriteFieldValue(boards.Item1[i, j].FieldValue);
                 }
+
                 Console.WriteLine();
             }
 
             Console.WriteLine("Oponent board");
 
-            Console.Write("  ");
-            for (int i = 0; i < AppData.BoardData.BoardSize; i++)
-                Console.Write($"{(char)('A' + i)} ");
-
-            Console.WriteLine();
+            WriteBoardColumns();
 
             for (int i = 0; i < AppData.BoardData.BoardSize; i++)
             {
                 for (int j = 0; j < AppData.BoardData.BoardSize; j++)
                 {
-                    if (j == 0)
-                        Console.Write($"{i} ");
+                    WriteRowNumber(i, j);
 
-                    Console.Write($"{boards.Item2[i, j].FieldValue} ");
+                    WriteFieldValue(boards.Item2[i, j].FieldValue);
                 }
+
                 Console.WriteLine();
             }
+        }
+
+        private void WriteFieldValue(string fieldValue)
+        {
+            if (fieldValue == "D")
+                SetConsoleColor(ConsoleColor.Green);
+            else if (fieldValue == "S")
+                SetConsoleColor(ConsoleColor.Cyan);
+            else if (fieldValue == "B")
+                SetConsoleColor(ConsoleColor.Yellow);
+            else if (fieldValue == "C")
+                SetConsoleColor(ConsoleColor.Magenta);
+            else if (fieldValue == "M")
+                SetConsoleColor(ConsoleColor.Blue);
+            else if (fieldValue == "H")
+                SetConsoleColor(ConsoleColor.Red);
+            else if (fieldValue == "X")
+                SetConsoleColor(ConsoleColor.Gray);
+
+            Console.Write($"{fieldValue} ");
+
+            ResetConsoleColor();
+        }
+
+        private void WriteBoardColumns()
+        {
+            SetConsoleColor(ConsoleColor.Blue);
+
+            Console.Write("  ");
+            for (int i = 0; i < AppData.BoardData.BoardSize; i++)
+                Console.Write($"{(char)('A' + i)} ");
+
+            ResetConsoleColor();
+
+            Console.WriteLine();
+        }
+
+        private void WriteRowNumber(int row, int column)
+        {
+            if (column == 0)
+            {
+                SetConsoleColor(ConsoleColor.Blue);
+                Console.Write($"{row} ");
+                ResetConsoleColor();
+            }
+        }
+
+        private void SetConsoleColor(ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+        }
+
+        private void ResetConsoleColor()
+        {
+            Console.ResetColor();
         }
 
         private void ClearScreen()
