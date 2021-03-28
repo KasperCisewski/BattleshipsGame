@@ -48,7 +48,7 @@ namespace Battleships.App
                 GameResult resultGame = null;
                 do
                 {
-                    ClearScreen();
+                    //ClearScreen();
                     ShowBoards(0);
                     Tuple<int, int> cordinatesToShot = null;
                     var lastAllowedLetter = (char)('A' + AppData.BoardData.BoardSize - 1);
@@ -85,12 +85,12 @@ namespace Battleships.App
                     } while (cordinatesToShot == null);
 
                     _boardService.ShotToField(0, cordinatesToShot);
-                    var result = gameStrategy.Play();
+                      var result = gameStrategy.Play();
                     // resultGame = await gameStrategy.PrepareGame();
 
-                } while (resultGame != null && resultGame.ShouldFinish);
+                } while (true);
 
-                Console.WriteLine($"Winner is {resultGame.WinnerName}");
+                //Console.WriteLine($"Winner is {resultGame.WinnerName}");
             }
 
         }
@@ -166,7 +166,7 @@ namespace Battleships.App
         {
             SetConsoleColor(ConsoleColor.Blue);
 
-            Console.Write("  ");
+            Console.Write("   ");
             for (int i = 0; i < AppData.BoardData.BoardSize; i++)
                 Console.Write($"{(char)('A' + i)} ");
 
@@ -180,7 +180,7 @@ namespace Battleships.App
             if (column == 0)
             {
                 SetConsoleColor(ConsoleColor.Blue);
-                Console.Write($"{row} ");
+                Console.Write($"{row + 1:00} ");
                 ResetConsoleColor();
             }
         }
