@@ -1,4 +1,6 @@
-﻿namespace Battleships.Data.Enums
+﻿using System.ComponentModel;
+
+namespace Battleships.Data.Enums
 {
     public enum FieldValue
     {

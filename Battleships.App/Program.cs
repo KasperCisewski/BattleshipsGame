@@ -1,4 +1,5 @@
-﻿using Battleships.Data.Objects;
+﻿using Battleships.App.Data;
+using Battleships.Data.Objects;
 using Battleships.Logic;
 using Battleships.Logic.Services;
 using Battleships.Logic.Services.Implementation;
@@ -24,8 +25,9 @@ namespace Battleships.App
         {
             var services = new ServiceCollection();
             services.AddScoped<BattleshipGame>();
-            services.AddSingleton<GameBoard>();
+            services.AddSingleton(new GameBoard(AppData.BoardData.BoardSize, AppData.ShipData.ShipsWithQuantity));
             services.AddScoped<GameStrategyCreator>();
+         //   services.AddScoped<PlayerBoardBuilder>();
             services.AddScoped<IBoardService, BoardService>();
             _serviceProvider = services.BuildServiceProvider(true);
         }

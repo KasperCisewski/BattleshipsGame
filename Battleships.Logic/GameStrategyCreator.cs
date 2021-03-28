@@ -3,7 +3,6 @@ using Battleships.Data.Objects;
 using Battleships.Logic.Strategies;
 using Battleships.Logic.Strategies.Implementation;
 using System;
-using System.Collections.Generic;
 
 namespace Battleships.Logic
 {
@@ -16,10 +15,10 @@ namespace Battleships.Logic
             _gameBoard = gameBoard;
         }
 
-        public IGameStrategy GetGameStrategy(UserChoice userChoice, int boardSize, Dictionary<ShipType, int> shipsWithQuantity) =>
+        public IGameStrategy GetGameStrategy(UserChoice userChoice) =>
             userChoice switch
             {
-                UserChoice.PlayWithComputer => new PlayWithComputerStrategy(_gameBoard, boardSize, shipsWithQuantity),
+                UserChoice.PlayWithComputer => new PlayWithComputerStrategy(_gameBoard),
                 _ => throw new Exception($"User choice {userChoice} is no supported!"),
             };
     }

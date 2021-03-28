@@ -5,6 +5,7 @@ using Battleships.Data.Extensions;
 using Battleships.Logic;
 using Battleships.Logic.Services;
 using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Battleships.App
@@ -40,8 +41,8 @@ namespace Battleships.App
                 return;
             }
 
-            var gameStrategy = _gameStrategyCreator.GetGameStrategy(userEnumChoice, AppData.BoardData.BoardSize, AppData.ShipData.ShipsWithQuantity);
-
+            var gameStrategy = _gameStrategyCreator.GetGameStrategy(userEnumChoice);
+            await gameStrategy.Play();
             if (userEnumChoice == UserChoice.PlayWithComputer)
             {
                 GameResult resultGame = null;
@@ -49,7 +50,19 @@ namespace Battleships.App
                 do
                 {
                     ClearScreen();
-                    ShowBoards();
+                    ShowBoards(0);
+                    var shotProposition = string.Empty;
+                    var isRegexMatch = false;
+                    var lastAllowedLetter = (char)('A' + AppData.BoardData.BoardSize - 1);
+                    do
+                    {
+                        Console.WriteLine($"Where do you want to shoot? Should be in format [A-{lastAllowedLetter}]-[1-{AppData.BoardData.BoardSize}]");
+                        shotProposition = Console.ReadLine();
+
+                        isRegexMatch = Regex.IsMatch(shotProposition, $"[A-{lastAllowedLetter}]-\\d");
+
+                    } while (isRegexMatch == false);
+
                     resultGame = await gameStrategy.Play();
 
                 } while (resultGame != null && resultGame.ShouldFinish);
@@ -67,26 +80,49 @@ namespace Battleships.App
                 Console.WriteLine($"{(int)menuChoice} - {menuChoice.GetDescription()}");
         }
 
-        private void ShowBoards()
+        private void ShowBoards(int playerId)
         {
-            var boards = _boardService.GetBoardFields(0);
+            var boards = _boardService.GetBoardFields(playerId);
+            Console.WriteLine("Your board");
 
-            for (int i = 0; i < boards.Item1.Length; i++)
+            Console.Write("  ");
+            for (int i = 0; i < AppData.BoardData.BoardSize; i++)
+                Console.Write($"{(char)('A' + i)} ");
+
+            Console.WriteLine();
+
+            for (int i = 0; i < AppData.BoardData.BoardSize; i++)
             {
-                for (int j = 0; j < boards.Item1.Length; j++)
-                {
 
+                for (int j = 0; j < AppData.BoardData.BoardSize; j++)
+                {
+                    if (j == 0)
+                        Console.Write($"{i} ");
+
+                    Console.Write($"{boards.Item1[i, j].FieldValue} ");
                 }
+                Console.WriteLine();
             }
 
-            for (int i = 0; i < boards.Item2.Length; i++)
+            Console.WriteLine("Oponent board");
+
+            Console.Write("  ");
+            for (int i = 0; i < AppData.BoardData.BoardSize; i++)
+                Console.Write($"{(char)('A' + i)} ");
+
+            Console.WriteLine();
+
+            for (int i = 0; i < AppData.BoardData.BoardSize; i++)
             {
-                for (int j = 0; j < boards.Item2.Length; j++)
+                for (int j = 0; j < AppData.BoardData.BoardSize; j++)
                 {
+                    if (j == 0)
+                        Console.Write($"{i} ");
 
+                    Console.Write($"{boards.Item2[i, j].FieldValue} ");
                 }
+                Console.WriteLine();
             }
-
         }
 
         private void ClearScreen()
