@@ -74,28 +74,22 @@ namespace Battleships.Data.Objects
                             continue;
                     }
 
+                    //TODO should check if on line where we want to put ship exist any other ship
+
                     for (int j = 0; j < shipLength; j++)
                     {
                         switch (randomDirection)
                         {
                             case Direction.Up:
-                              //  var place = board[randomRowAtBoard - j, randomColumnAtBoard];
-                                var desc = ship.Key.GetDescription();
                                 board[randomRowAtBoard - j, randomColumnAtBoard].FieldValue = ship.Key.GetDescription();
                                 break;
                             case Direction.Down:
-                                //var place1 = board[randomRowAtBoard - j, randomColumnAtBoard];
-                                var desc1 = ship.Key.GetDescription();
                                 board[randomRowAtBoard + j, randomColumnAtBoard].FieldValue = ship.Key.GetDescription();
                                 break;
                             case Direction.Left:
-                              //  var place2 = board[randomRowAtBoard - j, randomColumnAtBoard];
-                                var desc2 = ship.Key.GetDescription();
                                 board[randomRowAtBoard, randomColumnAtBoard - j].FieldValue = ship.Key.GetDescription();
                                 break;
                             case Direction.Right:
-                                //var place3 = board[randomRowAtBoard - j, randomColumnAtBoard];
-                                var desc3 = ship.Key.GetDescription();
                                 board[randomRowAtBoard, randomColumnAtBoard + j].FieldValue = ship.Key.GetDescription();
                                 break;
                             default:
