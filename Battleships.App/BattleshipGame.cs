@@ -47,7 +47,7 @@ namespace Battleships.App
                 do
                 {
                     ClearScreen();
-                    ShowBoards(0);
+                    ShowBoards(Player.First);
                     Tuple<int, int> cordinatesToShot = null;
                     var lastAllowedLetter = (char)('A' + AppData.BoardData.BoardSize - 1);
                     var rightFormat = $"[A-{lastAllowedLetter}]-[1-{AppData.BoardData.BoardSize}]";
@@ -103,9 +103,9 @@ namespace Battleships.App
                 Console.WriteLine($"{(int)menuChoice} - {menuChoice.GetDescription()}");
         }
 
-        private void ShowBoards(int playerId)
+        private void ShowBoards(Player player)
         {
-            var boards = _boardService.GetBoardFields(playerId);
+            var boards = _boardService.GetBoardFields(player);
 
             Console.WriteLine("Your board");
 

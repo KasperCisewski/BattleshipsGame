@@ -13,9 +13,9 @@ namespace Battleships.Logic.Services.Implementation
             _gameBoard = gameBoard;
         }
 
-        public bool CanShotToField(int player, Tuple<int, int> cordinates)
+        public bool CanShotToField(Player player, Tuple<int, int> cordinates)
         {
-            if (player == 0)
+            if (player == Player.First)
                 return CanShotToField(_gameBoard.BoardForSecondPlayer, cordinates);
             else
                 return CanShotToField(_gameBoard.BoardForFirstPlayer, cordinates);
@@ -31,9 +31,9 @@ namespace Battleships.Logic.Services.Implementation
             return true;
         }
 
-        public Tuple<Field[,], Field[,]> GetBoardFields(int player)
+        public Tuple<Field[,], Field[,]> GetBoardFields(Player player)
         {
-            if (player == 0)
+            if (player == Player.First)
             {
                 return new Tuple<Field[,], Field[,]>(_gameBoard.BoardForFirstPlayer, HideUnHitFields(_gameBoard.BoardForSecondPlayer));
             }
@@ -59,9 +59,9 @@ namespace Battleships.Logic.Services.Implementation
             return new Tuple<int, int>(rowNumber - 1, letterIndex - 1);
         }
 
-        public bool ShotToField(int player, Tuple<int, int> cordinates)
+        public bool ShotToField(Player player, Tuple<int, int> cordinates)
         {
-            if (player == 0)
+            if (player == Player.First)
                 return MakeFieldAsShotField(_gameBoard.BoardForSecondPlayer, cordinates);
             else
                 return MakeFieldAsShotField(_gameBoard.BoardForFirstPlayer, cordinates);
@@ -87,9 +87,9 @@ namespace Battleships.Logic.Services.Implementation
             return true;
         }
 
-        public bool CheckIfPlayerWon(int player)
+        public bool CheckIfPlayerWon(Player player)
         {
-            if (player == 0)
+            if (player == Player.First)
                 return CheckIfPlayerWon(_gameBoard.BoardForSecondPlayer);
             else
                 return CheckIfPlayerWon(_gameBoard.BoardForFirstPlayer);

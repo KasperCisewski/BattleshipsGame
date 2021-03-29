@@ -1,4 +1,5 @@
 ﻿using Battleships.Data.Data;
+using Battleships.Data.Enums;
 using Battleships.Data.Objects;
 using Battleships.Logic.Services;
 using System;
@@ -18,7 +19,7 @@ namespace Battleships.Logic.Strategies.Implementation
 
         public GameResult Play()
         {
-            var playerWon = _boardService.CheckIfPlayerWon(0);
+            var playerWon = _boardService.CheckIfPlayerWon(Player.First);
             if (playerWon)
                 return new GameResult()
                 {
@@ -34,16 +35,16 @@ namespace Battleships.Logic.Strategies.Implementation
                 var randomRow = random.Next(_gameBoard.BoardSize);
                 var randomColumn = random.Next(_gameBoard.BoardSize);
                 cordinatesToShot = new Tuple<int, int>(randomRow, randomColumn);
-                if (!_boardService.CanShotToField(1, cordinatesToShot))
+                if (!_boardService.CanShotToField(Player.Second, cordinatesToShot))
                 {
                     cordinatesToShot = null;
                 }
 
             } while (cordinatesToShot == null);
 
-            _boardService.ShotToField(1, cordinatesToShot);
+            _boardService.ShotToField(Player.Second, cordinatesToShot);
 
-            var computerWon = _boardService.CheckIfPlayerWon(1);
+            var computerWon = _boardService.CheckIfPlayerWon(Player.Second);
             if (computerWon)
                 return new GameResult()
                 {
