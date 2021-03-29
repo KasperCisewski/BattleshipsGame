@@ -6,6 +6,6 @@ namespace Battleships.Data.Objects
     {
         public string FieldValue { get; set; } = "X";
         public FieldType FieldType { get; set; }
-        public bool IsOccupied { get; set; }
+        public bool IsHit { get; set; }
     }
 }

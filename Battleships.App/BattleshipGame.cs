@@ -1,5 +1,4 @@
 ﻿using Battleships.App.Data;
-using Battleships.Data.Data;
 using Battleships.Data.Enums;
 using Battleships.Data.Extensions;
 using Battleships.Logic;
@@ -45,10 +44,9 @@ namespace Battleships.App
             gameStrategy.PrepareGame();
             if (userEnumChoice == UserChoice.PlayWithComputer)
             {
-                GameResult resultGame = null;
                 do
                 {
-                    //ClearScreen();
+                    ClearScreen();
                     ShowBoards(0);
                     Tuple<int, int> cordinatesToShot = null;
                     var lastAllowedLetter = (char)('A' + AppData.BoardData.BoardSize - 1);
@@ -89,14 +87,12 @@ namespace Battleships.App
 
                     if (result.ShouldFinish)
                     {
-                        Console.WriteLine($"Winner is {resultGame.WinnerName}");
+                        Console.WriteLine($"Winner is {result.WinnerName}");
                         return;
                     }
 
                 } while (true);
-
             }
-
         }
 
         private void WriteMenu()
@@ -155,11 +151,9 @@ namespace Battleships.App
             else if (fieldValue == "C")
                 SetConsoleColor(ConsoleColor.Magenta);
             else if (fieldValue == "M")
-                SetConsoleColor(ConsoleColor.Blue);
+                SetConsoleColor(ConsoleColor.DarkBlue);
             else if (fieldValue == "H")
                 SetConsoleColor(ConsoleColor.Red);
-            else if (fieldValue == "X")
-                SetConsoleColor(ConsoleColor.Gray);
 
             Console.Write($"{fieldValue} ");
 

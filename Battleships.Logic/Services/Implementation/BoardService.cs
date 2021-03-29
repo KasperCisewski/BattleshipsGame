@@ -34,12 +34,23 @@ namespace Battleships.Logic.Services.Implementation
 
         public Tuple<Field[,], Field[,]> GetBoardFields(int player)
         {
-            return new Tuple<Field[,], Field[,]>(_gameBoard.BoardForFirstPlayer, _gameBoard.BoardForSecondPlayer);
-            //if (player == 0)
-            //{
-            //    var visibleBoardForPlayer = _playerBoardBuilder.BuildVisibleBoard(player);
-            //    var notVisibleOpponentBoard = _playerBoardBuilder.BuildVisibleBoard(player + 1);
-            //}
+            if (player == 0)
+            {
+                return new Tuple<Field[,], Field[,]>(_gameBoard.BoardForFirstPlayer, HideUnHitFields(_gameBoard.BoardForSecondPlayer));
+            }
+            else
+            {
+                return new Tuple<Field[,], Field[,]>(HideUnHitFields(_gameBoard.BoardForFirstPlayer), _gameBoard.BoardForSecondPlayer);
+            }
+        }
+
+        public Field[,] HideUnHitFields(Field[,] fields)
+        {
+            foreach (var field in fields)
+                if (field.IsHit == false)
+                    field.FieldValue = "*";
+
+            return fields;
         }
 
         public Tuple<int, int> GetCordinatesFromShotPropositionFormat(string columnLetter, int rowNumber)
@@ -61,8 +72,19 @@ namespace Battleships.Logic.Services.Implementation
         {
             var specificField = oponentFields[cordinates.Item1, cordinates.Item2];
 
-            specificField.FieldValue = "H";
-            specificField.FieldType = FieldType.SinkShipPart;
+            if (specificField.FieldType == FieldType.LiveShipPart)
+            {
+                specificField.FieldValue = "H";
+                specificField.FieldType = FieldType.SinkShipPart;
+                specificField.IsHit = true;
+            }
+            else
+            {
+                specificField.FieldValue = "M";
+                specificField.FieldType = FieldType.Miss;
+                specificField.IsHit = true;
+            }
+
             return true;
         }
 
