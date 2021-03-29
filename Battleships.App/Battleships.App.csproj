@@ -13,8 +13,4 @@
     <ProjectReference Include="..\Battleships.Logic\Battleships.Logic.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Strategies\" />
-  </ItemGroup>
-
 </Project>
