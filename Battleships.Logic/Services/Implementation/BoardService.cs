@@ -1,7 +1,6 @@
 ﻿using Battleships.Data.Enums;
 using Battleships.Data.Objects;
 using System;
-using System.Linq;
 
 namespace Battleships.Logic.Services.Implementation
 {
@@ -26,7 +25,7 @@ namespace Battleships.Logic.Services.Implementation
         {
             var specificField = oponentFields[cordinates.Item1, cordinates.Item2];
 
-            if (specificField.FieldValue == "H" || specificField.FieldValue == "M")
+            if (specificField.FieldType == FieldType.Miss || specificField.FieldType == FieldType.SinkShipPart)
                 return false;
 
             return true;
