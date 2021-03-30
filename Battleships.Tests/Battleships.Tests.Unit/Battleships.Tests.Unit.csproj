@@ -20,6 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BattleshipsGame\Battleships.Logic\Battleships.Logic.csproj" />
+    <ProjectReference Include="..\..\Battleships.Logic\Battleships.Logic.csproj" />
   </ItemGroup>
 </Project>
