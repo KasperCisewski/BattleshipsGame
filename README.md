@@ -10,14 +10,14 @@ Battleship console application using ASP .NET 5.0
 	
 ## Technologies
 Project is created with:
-* ASP .NET Core 5.0
+* .NET 5.0
 	
 ## Setup
 
 To run console app
 
 ### Requirements:
-* .NET Core 5.0 installed on computer
+* .NET 5.0 installed on computer
 
 ```
 Run app:
