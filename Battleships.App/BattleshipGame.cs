@@ -74,7 +74,7 @@ namespace Battleships.App
 
                         cordinatesToShot = _boardService.GetCordinatesFromShotPropositionFormat(splittedShotProposition[0], fieldNumber);
 
-                        if (!_boardService.CanShotToField(0, cordinatesToShot))
+                        if (!_boardService.CanShotToField(Player.First, cordinatesToShot))
                         {
                             Console.WriteLine("You cant shot to that field");
                             cordinatesToShot = null;
@@ -82,7 +82,7 @@ namespace Battleships.App
 
                     } while (cordinatesToShot == null);
 
-                    _boardService.ShotToField(0, cordinatesToShot);
+                    _boardService.ShotToField(Player.First, cordinatesToShot);
                     var result = gameStrategy.Play();
 
                     if (result.ShouldFinish)
