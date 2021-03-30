@@ -2,7 +2,9 @@
 using Battleships.Data.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Battleships.Tests.Unit")]
 namespace Battleships.Data.Objects
 {
     public class GameBoard

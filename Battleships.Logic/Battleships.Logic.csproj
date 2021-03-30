@@ -7,5 +7,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Battleships.Data\Battleships.Data.csproj" />
   </ItemGroup>
-
 </Project>
